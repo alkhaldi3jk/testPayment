@@ -70,17 +70,6 @@ export default function Home({ navigation }) {
     executeDirectPayment();
   };
 
-//   const onExecuteRecurringPaymentButtonClickHandler = () => {
-//     executeRecurringPayment();
-//   };
-
-//   const onCancelRecurringPaymentButtonClickHandler = () => {
-//     cancelRucrring();
-//   };
-
-//   const onSendPaymentButtonClickHandler = () => {
-//     sendPayment();
-//   };
   //endregion
 
   //region render
@@ -138,25 +127,7 @@ export default function Home({ navigation }) {
 
       {payButton()}
 
-      <TouchableOpacity
-        style={[styles.buttonStyle, { width: "70%" }]}
-        // onPress={onSendPaymentButtonClickHandler()}
-        underlayColor="#fff"
-      >
-        <Text style={[styles.buttonText, { fontSize: 18, fontWeight: "500" }]}>
-          Send Payment
-        </Text>
-      </TouchableOpacity>
-
-      <Button
-        title="Execute Recurring Payment"
-        // onPress={onExecuteRecurringPaymentButtonClickHandler()}
-      />
-
-      <Button
-        title="Cancel Recurring Payment"
-        // onPress={onCancelRecurringPaymentButtonClickHandler()}
-      />
+   
     </View>
   );
   //endregion
@@ -289,8 +260,7 @@ export default function Home({ navigation }) {
                   )}
 
                   <Text style={styles.welcome}>
-                    {" "}
-                    {rowData.PaymentMethodEn}{" "}
+                    {rowData.PaymentMethodEn}
                   </Text>
                 </View>
               </TouchableOpacity>
@@ -310,25 +280,7 @@ export default function Home({ navigation }) {
   function hideLoading() {
     setLoading(false);
   }
-//   function getCardInfo() {
-//     const cardExpiryMonth = month;
-//     const cardExpiryYear = year;
-//     const cardSecureCode = cvv;
-//     const paymentType = MFPaymentype.CARD;
-//     // const paymentType = MFPaymentype.TOKEN
-//     const saveToken = false;
-//     const card = new MFCardInfo(
-//       cardNumber,
-//       cardExpiryMonth,
-//       cardExpiryYear,
-//       cardSecureCode,
-//       cardHolderName,
-//       paymentType,
-//       saveToken
-//     );
-//     card.bypass = false;
-//     return card;
-//   }
+
 
   function executeResquestJson() {
     const request = new MFExecutePaymentRequest(
@@ -351,47 +303,8 @@ export default function Home({ navigation }) {
     return request;
   }
 
-//   function getSendPaymentRequest() {
-//     const request = new MFSendPaymentRequest(
-//       parseFloat(invoiceValue),
-//       MFNotificationOption.ALL,
-//       "Test"
-//     );
 
-//     // send invoice link as sms to specified number
-//     //const request = new MFSendPaymentRequest(parseFloat(invoiceValue), MFNotificationOption.SMS, 'Test')
-//     // request.customerMobile  = '' // required here
-
-//     // get invoice link
-//     //const request = new MFSendPaymentRequest(parseFloat(invoiceValue), MFNotificationOption.LINK, 'Test')
-
-//     //  send invoice link to email
-//     //const request = new MFSendPaymentRequest(parseFloat(invoiceValue), MFNotificationOption.EMAIL, 'Test')
-//     // request.customerEmail = '' required here
-
-//     //request.userDefinedField = ''
-//     request.customerEmail = "a@b.com"; // must be email
-//     request.customerMobile = "mobile no"; //Required
-//     request.customerCivilId = "";
-//     request.mobileCountryIsoCode = MFMobileCountryCodeISO.KUWAIT;
-//     request.customerReference = "";
-//     request.language = "en";
-//     const address = new MFCustomerAddress("ddd", "sss", "sss", "sss", "sss");
-//     request.customerAddress = address;
-//     request.customerReference = "";
-//     request.language = "en";
-//     request.displayCurrencyIso = MFCurrencyISO.KUWAIT_KWD;
-//     // const productList = []
-//     // const product = new MFProduct("ABC", 1.887, 1)
-//     // productList.push(product)
-//     // request.invoiceItems = productList
-//     return request;
-//   }
-
-
-  //endregion
-
-  //region myfaootrah-react-native methods
+  
   function initiatePayments() {
     const initiateRequest = new MFInitiatePayment(50, MFCurrencyISO.KUWAIT_KWD);
     MFPaymentRequest.sharedInstance.initiatePayment(
@@ -408,7 +321,7 @@ export default function Home({ navigation }) {
   }
 
   function executePayment() {
-    let request = executeResquestJson();
+    const request = executeResquestJson();
     showLoading();
     MFPaymentRequest.sharedInstance.executePayment(
       navigation,
@@ -428,129 +341,36 @@ export default function Home({ navigation }) {
               ", Invoice status: " +
               paymentStatusResponse.InvoiceStatus
           );
+          console.log(response)
         }
       }
     );
   }
 
-  //   function executeDirectPayment() {
-  //     const request = executeResquestJson();
-  //     const cardInfo = getCardInfo();
-  //     showLoading();
-  //     MFPaymentRequest.sharedInstance.executeDirectPayment(
-  //       navigation,
-  //       request,
-  //       cardInfo,
-  //       MFLanguage.ENGLISH,
-  //       (response) => {
-  //         hideLoading();
-  //         if (response.getError()) {
-  //           alert("error: " + response.getError().error);
-  //         } else {
-  //           // alert(response.getBodyString())
-  //           const paymentStatusResponse =
-  //             response.getBodyJson().getPaymentStatusResponse;
-  //           const invoiceId = paymentStatusResponse.InvoiceId;
-  //           alert(
-  //             "success with Invoice Id: " +
-  //               invoiceId +
-  //               ", Invoice status: " +
-  //               paymentStatusResponse.InvoiceStatus
-  //           );
-  //         }
-  //       }
-  //     );
-  //   }
-  //   function executeRecurringPayment() {
-  //     const request = executeResquestJson();
-  //     const cardInfo = getCardInfo();
-  //     showLoading();
-  //     MFPaymentRequest.sharedInstance.executeRecurringPayment(
-  //       navigation,
-  //       request,
-  //       cardInfo,
-  //       10,
-  //       MFLanguage.ENGLISH,
-  //       (response) => {
-  //         hideLoading();
-  //         if (response.getError()) {
-  //           alert("error: " + response.getError().error);
-  //         } else {
-  //           alert(response.getBodyString());
-  //           const cardInfoResponse = response.getBodyJson().cardInfoResponse;
-  //           setRecurringId(cardInfoResponse.RecurringId);
-  //           const paymentStatusResponse =
-  //             response.getBodyJson().getPaymentStatusResponse;
-  //           const invoiceId = paymentStatusResponse.InvoiceId;
-  //           alert(
-  //             "success with Invoice Id: " +
-  //               invoiceId +
-  //               ", Invoice status: " +
-  //               paymentStatusResponse.InvoiceStatus
-  //           );
-  //         }
-  //       }
-  //     );
-  //   }
-  //   function cancelRucrring() {
-  //     showLoading();
-  //     MFPaymentRequest.sharedInstance.cancelRecurringPayment(
-  //       recurringId,
-  //       MFLanguage.ENGLISH,
-  //       (response) => {
-  //         hideLoading();
-  //         if (response.getError()) {
-  //           alert("error: " + response.getError().error);
-  //         } else {
-  //           alert(response.getBodyString());
-  //           // const paymentStatusResponse = response.getBodyJson().getPaymentStatusResponse;
-  //           // const invoiceId = paymentStatusResponse.InvoiceId
-  //           // alert('success with Invoice Id: ' + invoiceId + ', Invoice status: ' + paymentStatusResponse.InvoiceStatus);
-  //         }
-  //       }
-  //     );
-  //   }
-  //   function sendPayment() {
-  //     showLoading();
-  //     const sendPaymentRequest = getSendPaymentRequest();
-  //     MFPaymentRequest.sharedInstance.sendPayment(
-  //       sendPaymentRequest,
-  //       MFLanguage.ENGLISH,
-  //       (response) => {
-  //         hideLoading();
-  //         if (response.getError()) {
-  //           alert("error: " + response.getError().error);
-  //         } else {
-  //           alert(response.getBodyString());
-  //           // const paymentStatusResponse = response.getBodyJson().getPaymentStatusResponse;
-  //           // const invoiceId = paymentStatusResponse.InvoiceId
-  //           // alert('success with Invoice Id: ' + invoiceId + ', Invoice status: ' + paymentStatusResponse.InvoiceStatus);
-  //         }
-  //       }
-  //     );
-  //   }
 
-  //   function getPaymentStatus() {
-  //     const paymentStatusRequest = new MFPaymentStatusRequest(
-  //       "111111",
-  //       MFKeyType.PAYMENTID
-  //     );
-  //     MFPaymentRequest.sharedInstance.getPaymentStatus(
-  //       paymentStatusRequest,
-  //       MFLanguage.ENGLISH,
-  //       (response) => {
-  //         if (response.getError()) {
-  //           alert("error: " + response.getError().error);
-  //         } else {
-  //           alert(response.getBodyString());
-  //           // const paymentStatusResponse = response.getBodyJson().getPaymentStatusResponse;
-  //           // const invoiceId = paymentStatusResponse.InvoiceId
-  //           // alert('success with Invoice Id: ' + invoiceId + ', Invoice status: ' + paymentStatusResponse.InvoiceStatus);
-  //         }
-  //       }
-  //     );
-  //   }
-  //endregion
+
+    function getPaymentStatus() {
+      const paymentStatusRequest = new MFPaymentStatusRequest(
+        "111111",
+        MFKeyType.PAYMENTID
+      );
+      MFPaymentRequest.sharedInstance.getPaymentStatus(
+        paymentStatusRequest,
+        MFLanguage.ENGLISH,
+        (response) => {
+          if (response.getError()) {
+            alert("error: " + response.getError().error);
+          } else {
+            alert(response.getBodyString());
+            const paymentStatusResponse = response.getBodyJson().getPaymentStatusResponse;
+            const invoiceId = paymentStatusResponse.InvoiceId
+            alert('success with Invoice Id: ' + invoiceId + ', Invoice status: ' + paymentStatusResponse.InvoiceStatus)
+            console.log(response);
+          }
+        }
+      );
+    }
+  //endregion 4508750015741019
 }
 
 const styles = StyleSheet.create({
