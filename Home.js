@@ -126,8 +126,6 @@ export default function Home({ navigation }) {
       {creditCardView()}
 
       {payButton()}
-
-   
     </View>
   );
   //endregion
@@ -259,9 +257,7 @@ export default function Home({ navigation }) {
                     />
                   )}
 
-                  <Text style={styles.welcome}>
-                    {rowData.PaymentMethodEn}
-                  </Text>
+                  <Text style={styles.welcome}>{rowData.PaymentMethodEn}</Text>
                 </View>
               </TouchableOpacity>
             );
@@ -280,7 +276,6 @@ export default function Home({ navigation }) {
   function hideLoading() {
     setLoading(false);
   }
-
 
   function executeResquestJson() {
     const request = new MFExecutePaymentRequest(
@@ -303,8 +298,6 @@ export default function Home({ navigation }) {
     return request;
   }
 
-
-  
   function initiatePayments() {
     const initiateRequest = new MFInitiatePayment(50, MFCurrencyISO.KUWAIT_KWD);
     MFPaymentRequest.sharedInstance.initiatePayment(
@@ -341,35 +334,43 @@ export default function Home({ navigation }) {
               ", Invoice status: " +
               paymentStatusResponse.InvoiceStatus
           );
-          console.log(response)
+          console.log(response);
         }
       }
     );
   }
 
-
-
-    function getPaymentStatus() {
-      const paymentStatusRequest = new MFPaymentStatusRequest(
-        "111111",
-        MFKeyType.PAYMENTID
-      );
-      MFPaymentRequest.sharedInstance.getPaymentStatus(
-        paymentStatusRequest,
-        MFLanguage.ENGLISH,
-        (response) => {
-          if (response.getError()) {
-            alert("error: " + response.getError().error);
-          } else {
-            alert(response.getBodyString());
-            const paymentStatusResponse = response.getBodyJson().getPaymentStatusResponse;
-            const invoiceId = paymentStatusResponse.InvoiceId
-            alert('success with Invoice Id: ' + invoiceId + ', Invoice status: ' + paymentStatusResponse.InvoiceStatus)
-            console.log(response);
-          }
+  function getPaymentStatus() {
+    const paymentStatusRequest = new MFPaymentStatusRequest(
+      "111111",
+      MFKeyType.PAYMENTID
+    );
+    MFPaymentRequest.sharedInstance.getPaymentStatus(
+      paymentStatusRequest,
+      MFLanguage.ENGLISH,
+      (response) => {
+        if (response.getError()) {
+          <View>
+            <Text>"error: " {+response.getError().error}</Text>
+          </View>;
+        } else {
+          response.getBodyString();
+          const paymentStatusResponse =
+            response.getBodyJson().getPaymentStatusResponse;
+          const invoiceId = paymentStatusResponse.InvoiceId;
+          <View>
+            <Text>
+                {`success with Invoice Id: ` +
+                    invoiceId +
+                    `, Invoice status:`  +
+                    paymentStatusResponse.InvoiceStatus}
+            </Text>
+          </View>;
         }
-      );
-    }
+        console.log(response);
+      }
+    );
+  }
   //endregion 4508750015741019
 }
 
