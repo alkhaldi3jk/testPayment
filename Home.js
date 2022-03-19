@@ -291,6 +291,11 @@ export default function Home({ navigation }) {
     request.language = "en";
     request.mobileCountryCode = MFMobileCountryCodeISO.KUWAIT;
     request.displayCurrencyIso = MFCurrencyISO.KUWAIT_KWD;
+    // request.suppliers=[{
+    //     "SupplierCode": 1,
+    //     "ProposedShare": null,
+    //     "InvoiceShare": 600
+    //     }]
     // var productList = []
     // var product = new MFProduct("ABC", 1.887, 1)
     // productList.push(product)
